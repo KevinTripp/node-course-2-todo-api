@@ -88,12 +88,12 @@ describe('Get /Todo/:id', () => {
     request(app)
     .get(`/todos/${new ObjectID().toHexString()}`)
     .expect(404)
-    .end(done)
+    .end(done);
   });
   it('should return 404 for non obhect ids', (done) => {
     request(app)
     .get(`/todos/123`)
     .expect(404)
     .end(done)
-  })
+  });
 });
