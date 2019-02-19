@@ -34,22 +34,24 @@ app.get('/todos',(req, res) =>{
 
 app.get('/todos/:id', (req, res) =>{
   var id = req.params.id;
-  var valid = mongodb.ObjectID.isValid(id)
-  if(!valid){
-    res.status(404).send({error:"Id is not valid"})
+
+  if(!mongodb.ObjectID.isValid(id)){
+    return res.status(404).send({error:"Id is not valid"})
   }
   Todo.findById(id).then((todo) => {
     if(!todo){
-      res.status(404).send({error:"No matching records for that id"});
+      return res.status(404).send({error:"No matching records for that id"});
     }
-    res.status(200).send(todo);
-  }).catch((e) => res.status(400).send({e}));
+    res.send({todo});
+  }).catch((e) => {
+    res.status(400).send({e})
+  });
 });
 
 app.delete('/todos/:id', (req, res) => {
   var id = req.params.id;
   if(!mongodb.ObjectID.isValid(id)){
-    res.status(404).send({error:"Id is not valid"})
+   return res.status(404).send({error:"Id is not valid"})
   }
 
   Todo.findByIdAndRemove(id).then((todo)=>{
